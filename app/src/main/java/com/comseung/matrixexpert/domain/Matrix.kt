@@ -13,6 +13,8 @@ class Matrix(
             cols <= 0) throw IllegalArgumentException()
 
         data = Array(rows) { DoubleArray(cols) }
+
+
     }
 
     operator fun get(r: Int) = data[r]
