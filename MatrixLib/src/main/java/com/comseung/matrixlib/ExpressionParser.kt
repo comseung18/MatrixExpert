@@ -1,4 +1,4 @@
-package com.comseung.matrixexpert.domain
+package com.comseung.matrixlib
 
 interface ExpressionParser {
     fun calc(expr: String) : String

@@ -1,10 +1,11 @@
-package com.comseung.matrixexpert.domain
+package com.comseung.matrixlib
 
 import kotlin.math.round
 
-class Matrix(
+data class Matrix(
     val rows : Int = 1,
-    val cols : Int = 1
+    val cols : Int = 1,
+    val name : String = "",
 ) {
 
     private val data : Array<DoubleArray>
@@ -37,11 +38,17 @@ class Matrix(
         data[r2] = swap
     }
 
+    fun dataString(): String {
+        return data.toList().flatMap {
+            it.toList()
+        }.toString()
+    }
+
 
 
     override fun toString(): String {
         val buffer = StringBuilder()
-        buffer.append("==========\n")
+        buffer.append("===== $name  =====\n")
         data.forEach { row ->
             row.joinTo(
                 buffer,
@@ -55,14 +62,13 @@ class Matrix(
         return buffer.toString()
     }
 }
-
 fun zeros(rows: Int, cols: Int) = Matrix(rows, cols)
 fun zeros(n : Int) = zeros(n, n)
 
 fun ones(rows: Int, cols: Int) : Matrix {
     val ret = Matrix(rows, cols)
     for(r in 0 until rows)
-            ret[r] = DoubleArray(cols) { 1.0 }
+        ret[r] = DoubleArray(cols) { 1.0 }
     return ret
 }
 fun ones(n: Int) = ones(n, n)
