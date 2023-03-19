@@ -62,23 +62,4 @@ data class Matrix(
         return buffer.toString()
     }
 }
-fun zeros(rows: Int, cols: Int) = Matrix(rows, cols)
-fun zeros(n : Int) = zeros(n, n)
-
-fun ones(rows: Int, cols: Int) : Matrix {
-    val ret = Matrix(rows, cols)
-    for(r in 0 until rows)
-        ret[r] = DoubleArray(cols) { 1.0 }
-    return ret
-}
-fun ones(n: Int) = ones(n, n)
-
-fun identify(rows: Int, cols: Int) : Matrix {
-    val ret = Matrix(rows, cols)
-    for(i in 0 until rows)
-        ret[i][i] = 1.0
-
-    return ret
-}
-fun identify(n: Int) = identify(n, n)
 

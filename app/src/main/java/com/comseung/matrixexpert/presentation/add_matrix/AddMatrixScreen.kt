@@ -28,15 +28,19 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.comseung.matrixexpert.presentation.EditTextInputWithLabel
+import com.comseung.matrixexpert.presentation.home.HomeViewModel
 
-@Preview
 @Composable
 fun AddMatrixScreen(
+    viewModel: AddMatrixViewModel,
     modifier: Modifier = Modifier,
+    onNavigationToHome: ()->Unit = {},
+
 ) {
-    val viewModel: AddMatrixViewModel = viewModel()
 
     val matrixName = remember { viewModel.matrixName }
     val matrixCol = remember { viewModel.matrixCol }
@@ -76,14 +80,13 @@ fun AddMatrixScreen(
         ) {
             Button(
                 onClick = {
-                    viewModel.printInfo()
+                    viewModel.addMatrix()
+                    onNavigationToHome()
                 },
             ) {
                 Text(text = "Add")
             }
         }
-
-
 
     }
 

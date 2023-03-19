@@ -3,17 +3,21 @@ package com.comseung.matrixexpert.presentation.add_matrix
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.comseung.matrixexpert.domain.use_case.AddMatrix
 import com.comseung.matrixexpert.domain.use_case.GetMatrixDefaultName
 import com.comseung.matrixlib.Matrix
 import com.comseung.matrixlib.setCols
 import com.comseung.matrixlib.setRows
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddMatrixViewModel @Inject constructor(
-    private val getMatrixDefaultName: GetMatrixDefaultName
+    private val getMatrixDefaultName: GetMatrixDefaultName,
+    private val addMatrixUseCase: AddMatrix
 ) : ViewModel() {
 
     private var mat = Matrix()
@@ -51,7 +55,10 @@ class AddMatrixViewModel @Inject constructor(
     }
 
     fun addMatrix() {
-
+        CoroutineScope(Dispatchers.Default).launch {
+            mat = mat.copy(name = matrixName.value)
+            addMatrixUseCase(mat)
+        }
     }
 
 }

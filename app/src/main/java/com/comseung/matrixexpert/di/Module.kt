@@ -5,7 +5,9 @@ import androidx.room.Room
 import com.comseung.matrixexpert.data.data_source.MatrixDatabase
 import com.comseung.matrixexpert.data.repository.MatrixRepositoryImpl
 import com.comseung.matrixexpert.domain.repository.MatrixRepository
+import com.comseung.matrixexpert.domain.use_case.AddMatrix
 import com.comseung.matrixexpert.domain.use_case.GetMatrixDefaultName
+import com.comseung.matrixexpert.domain.use_case.GetMatrixList
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
@@ -35,5 +37,17 @@ object Module {
     @Singleton
     fun provideGetMatrixDefaultName(matrixRepository: MatrixRepository): GetMatrixDefaultName{
         return GetMatrixDefaultName(matrixRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAddMatrix(matrixRepository: MatrixRepository): AddMatrix{
+        return AddMatrix(matrixRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetMatrices(matrixRepository: MatrixRepository): GetMatrixList{
+        return GetMatrixList(matrixRepository)
     }
 }
