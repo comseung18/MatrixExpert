@@ -1,5 +1,6 @@
 package com.comseung.matrixexpert.presentation.home
 
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.comseung.matrixexpert.LockScreenOrientation
 import com.comseung.matrixexpert.domain.model.MatrixFunc
 import com.comseung.matrixlib.Matrix
 import kotlinx.coroutines.launch
@@ -36,6 +38,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     onNavigationToAddMatrix: ()->Unit = {},
 ) {
+    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
 
     Column(

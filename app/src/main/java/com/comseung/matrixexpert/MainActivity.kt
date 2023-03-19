@@ -1,16 +1,25 @@
 package com.comseung.matrixexpert
 
+import android.app.Activity
 import android.app.Application
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Yellow
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -31,12 +40,15 @@ class MainActivity : ComponentActivity() {
         setContent {
 
 
+
             MatrixExpertTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
+                    val navController = rememberNavController()
 
                     Scaffold(
                         topBar = {
@@ -50,7 +62,18 @@ class MainActivity : ComponentActivity() {
                                 colors = TopAppBarDefaults.smallTopAppBarColors(
                                     containerColor =
                                     MaterialTheme.colorScheme.primary
-                                )
+                                ),
+                                actions = {
+                                    IconButton(onClick = {
+                                        navController.navigate("add_matrix")
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Filled.AddCircle,
+                                            contentDescription = "Share",
+                                            tint = Color.White
+                                        )
+                                    }
+                                }
                             )
                         },
 
@@ -58,7 +81,8 @@ class MainActivity : ComponentActivity() {
                         MyAppNavHost(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(paddingValues)
+                                .padding(paddingValues),
+                            navController = navController
                         )
                     }
 
@@ -71,7 +95,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun MyAppNavHost(
         modifier: Modifier = Modifier,
-        navController: NavHostController = rememberNavController(),
+        navController: NavHostController,
         startDestination: String = "home"
     ) {
         NavHost(
@@ -91,6 +115,28 @@ class MainActivity : ComponentActivity() {
                     viewModel = hiltViewModel(),
                 )
             }
+        }
+    }
+
+
+}
+
+private fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
+
+@Composable
+fun LockScreenOrientation(orientation: Int) {
+    val context = LocalContext.current
+    DisposableEffect(orientation) {
+        val activity = context.findActivity() ?: return@DisposableEffect onDispose {}
+        val originalOrientation = activity.requestedOrientation
+        activity.requestedOrientation = orientation
+        onDispose {
+            // restore original orientation when view disappears
+            activity.requestedOrientation = originalOrientation
         }
     }
 }
